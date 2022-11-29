@@ -1,14 +1,42 @@
 import React from "react";
 import Clock from "react-clock";
+import { useGeolocated } from "react-geolocated";
+import SunCalc from "suncalc";
+
 import "the-new-css-reset/css/reset.css";
 import "react-clock/dist/Clock.css";
 
 import "./App.scss";
 
 function App() {
-  const [value, setValue] = React.useState(new Date());
-
+  const [value, setValue] = React.useState<Date>(new Date());
   const staticValue = React.useMemo<Date>(() => new Date(), []);
+
+  const { coords, isGeolocationEnabled } = useGeolocated({
+    positionOptions: {
+      enableHighAccuracy: false,
+    },
+    userDecisionTimeout: 60000,
+  });
+
+  const today = new Date();
+  const timesToday =
+    isGeolocationEnabled && coords
+      ? SunCalc.getTimes(today, coords.latitude, coords.longitude)
+      : undefined;
+
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const timesTomorrow =
+    isGeolocationEnabled && coords
+      ? SunCalc.getTimes(tomorrow, coords.latitude, coords.longitude)
+      : undefined;
+
+  const isDarkTheme =
+    timesToday && timesTomorrow
+      ? value.getTime() > timesToday.sunset.getTime() &&
+        value.getTime() < timesTomorrow.sunrise.getTime()
+      : false;
 
   React.useEffect(() => {
     const interval = setInterval(() => setValue(new Date()), 1000);
@@ -17,8 +45,6 @@ function App() {
       clearInterval(interval);
     };
   }, []);
-
-  const isDarkTheme = value.getHours() > 21 || value.getHours() < 7;
 
   return (
     <main className={`main ${isDarkTheme ? "dark" : "light"}`}>
@@ -33,6 +59,7 @@ function App() {
             {value.toLocaleString(window.navigator.language, {
               day: "numeric",
             })}
+
             <br />
             {value.toLocaleString(window.navigator.language, {
               month: "long",
