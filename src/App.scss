@@ -1,0 +1,190 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap");
+
+//$mainColor: #555;
+//$bgColor: #fff;
+//$greyColor: #999;
+//$textColor: #111111;
+//
+//$bgColorDark: #000;
+
+$fontClock: "Roboto", sans-serif;
+$fontCaptions: "Roboto", sans-serif;
+
+body,
+html {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+@mixin themable($theme-name, $container-bg, $mainColor, $textColor) {
+  .main {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 64px;
+    padding-right: 64px;
+
+    &.#{$theme-name} {
+      background-color: $container-bg;
+
+      .left {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-right: 80px;
+      }
+
+      .right {
+        position: relative;
+      }
+
+      .text {
+        font-family: $fontCaptions;
+        color: $mainColor;
+
+        &.day-text {
+          text-align: right;
+          font-size: 4rem;
+          font-weight: 700;
+        }
+
+        &.date-text {
+          text-align: right;
+          font-size: 3rem;
+          font-weight: 700;
+        }
+
+        &.time-text {
+          font-family: $fontClock;
+          font-size: 5.4rem;
+          font-weight: 500;
+          color: $mainColor;
+          position: absolute;
+          top: 55%;
+          left: 50%;
+          transform: translateX(-50%);
+          border: 3px solid $mainColor;
+          border-radius: 16px;
+          padding: 0 16px;
+        }
+      }
+
+      .dot {
+        z-index: 10;
+        width: 20px;
+        height: 20px;
+        background-color: $mainColor;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        border-radius: 100%;
+        border: 6px solid red;
+      }
+
+      .clock-hours {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+
+        .react-clock__face {
+          border: 0;
+        }
+
+        .react-clock__mark {
+          .react-clock__mark__body {
+            background: $mainColor;
+          }
+
+          .react-clock__mark__number {
+            font-size: 4rem;
+            font-weight: 500;
+            font-family: $fontClock;
+            color: $mainColor;
+          }
+        }
+      }
+
+      .clock {
+        .react-clock__face {
+          border: 0;
+        }
+
+        .react-clock__hour-hand {
+          z-index: 1;
+
+          .react-clock__hour-hand__body {
+            border-radius: 12px;
+            background: $mainColor;
+            z-index: 1;
+
+            &:after {
+              content: "";
+              position: absolute;
+              bottom: 32px;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 24px;
+              height: calc(100% - 32px);
+              background: $mainColor;
+              border-radius: 12px;
+              box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
+              z-index: -1;
+            }
+          }
+        }
+
+        .react-clock__minute-hand {
+          z-index: 2;
+
+          .react-clock__minute-hand__body {
+            border-radius: 12px;
+            background: $mainColor;
+            z-index: 1;
+
+            &:after {
+              content: "";
+              position: absolute;
+              bottom: 32px;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 24px;
+              height: calc(100% + 56px);
+              background: $mainColor;
+              border-radius: 12px;
+              box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
+              z-index: -1;
+            }
+          }
+        }
+
+        .react-clock__second-hand {
+          z-index: 3;
+
+          .react-clock__second-hand__body {
+            box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
+          }
+        }
+
+        .react-clock__mark {
+          .react-clock__mark__body {
+            background: $mainColor;
+          }
+        }
+      }
+    }
+  }
+}
+
+@include themable("light", #fff, #000, #111);
+@include themable("dark", #000, #fff, #111);
