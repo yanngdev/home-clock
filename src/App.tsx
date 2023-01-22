@@ -1,12 +1,11 @@
-import React from "react";
-import Clock from "react-clock";
-import { useGeolocated } from "react-geolocated";
-import SunCalc from "suncalc";
+import React from 'react';
+import Clock from 'react-clock';
+import { useGeolocated } from 'react-geolocated';
+import SunCalc from 'suncalc';
+import 'the-new-css-reset/css/reset.css';
+import 'react-clock/dist/Clock.css';
 
-import "the-new-css-reset/css/reset.css";
-import "react-clock/dist/Clock.css";
-
-import "./App.scss";
+import './App.scss';
 
 function App() {
   const [value, setValue] = React.useState<Date>(new Date());
@@ -21,21 +20,16 @@ function App() {
 
   const today = new Date();
   const timesToday =
-    isGeolocationEnabled && coords
-      ? SunCalc.getTimes(today, coords.latitude, coords.longitude)
-      : undefined;
+    isGeolocationEnabled && coords ? SunCalc.getTimes(today, coords.latitude, coords.longitude) : undefined;
 
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
   const timesTomorrow =
-    isGeolocationEnabled && coords
-      ? SunCalc.getTimes(tomorrow, coords.latitude, coords.longitude)
-      : undefined;
+    isGeolocationEnabled && coords ? SunCalc.getTimes(tomorrow, coords.latitude, coords.longitude) : undefined;
 
   const isDarkTheme =
     timesToday && timesTomorrow
-      ? value.getTime() > timesToday.sunset.getTime() &&
-        value.getTime() < timesTomorrow.sunrise.getTime()
+      ? value.getTime() > timesToday.sunset.getTime() && value.getTime() < timesTomorrow.sunrise.getTime()
       : false;
 
   React.useEffect(() => {
@@ -47,22 +41,22 @@ function App() {
   }, []);
 
   return (
-    <main className={`main ${isDarkTheme ? "dark" : "light"}`}>
+    <main className={`main ${isDarkTheme ? 'dark' : 'light'}`}>
       <div className="left">
         <div className="date">
           <div className="text day-text">
             {value.toLocaleString(window.navigator.language, {
-              weekday: "long",
+              weekday: 'long',
             })}
           </div>
           <div className="text date-text">
             {value.toLocaleString(window.navigator.language, {
-              day: "numeric",
+              day: 'numeric',
             })}
 
             <br />
             {value.toLocaleString(window.navigator.language, {
-              month: "long",
+              month: 'long',
             })}
           </div>
         </div>
@@ -71,8 +65,8 @@ function App() {
       <div className="right">
         <div className="text time-text">
           {value.toLocaleString(window.navigator.language, {
-            minute: "numeric",
-            hour: "numeric",
+            minute: 'numeric',
+            hour: 'numeric',
           })}
         </div>
 
